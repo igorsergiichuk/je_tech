@@ -23,55 +23,23 @@
         </div>
         <div class="item-page__controls">
             <border />
-            <div class="item-page__counter-box">
-                <img
-                    alt="Increase Selected Quantity Button"
-                    src="@/assets/icons/minus/minus-28@3x.png"
-                    class="item-page__counter-button"
-                    @click="decreaseQuantity"
-                />
-                <div
-                    class="item-page__counter-quantity"
-                    :class="{'item-page__counter-quantity-active' : selectedQuantity}"
-                >
-                    {{selectedQuantity}}
-                </div>
-                <img
-                    alt="Dencrease Selected Quantity Button"
-                    src="@/assets/icons/plus/plus-28@3x.png"
-                    class="item-page__counter-button"
-                    @click="increaseQuantity"
-                />
-            </div>
-            <div class="item-page__add-button-container">
-                <div class="item-page__add-button item-page__add-button_disabled" v-if="!selectedQuantity">
-                    Add product
-                </div>
-                <div
-                    class="item-page__add-button item-page__add-button_active"
-                    @click="addItemToCart"
-                    v-else
-                >
-                    <span>Add {{selectedQuantity}}</span>
-                    <span>CHF {{selectedQuantityPrice}}</span>
-                </div>
-            </div>
+            <item-counter />
+            <item-add-to-cart-button />
         </div>
     </div>
 </template>
 
 <script>
     import Border from "@/components/global/border";
+    import ItemCounter from "./itemCounter";
+    import ItemAddToCartButton from "./itemAddToCartButton";
 
     export default {
         name: "menuItem",
         components: {
+            ItemAddToCartButton,
+            ItemCounter,
             Border
-        },
-        data() {
-            return {
-                selectedQuantity: 0
-            }
         },
         computed: {
             /**
@@ -80,14 +48,7 @@
              */
             item() {
                 return this.$store.state.selectedItem;
-            },
-            /**
-             * Display selected quantity price
-             * @returns {*|string}
-             */
-            selectedQuantityPrice() {
-                return (this.item.price * this.selectedQuantity).toFixed(2);
-            },
+            }
         },
         methods: {
             /**
@@ -103,25 +64,6 @@
              */
             itemPrice(price) {
                 return price.toFixed(2);
-            },
-            /**
-             * Increase selected item quantity on click
-             */
-            increaseQuantity() {
-                this.selectedQuantity += 1;
-            },
-            /**
-             * Decrease selected item quantity on click
-             */
-            decreaseQuantity() {
-                if (this.selectedQuantity > 0) {
-                    this.selectedQuantity -= 1;
-                }
-            },
-            addItemToCart() {
-                let itemToAdd = Object.assign(this.$store.state.selectedItem, {});
-                itemToAdd.quantity = this.selectedQuantity;
-                this.$store.state.commit();
             }
         }
     }
@@ -178,52 +120,6 @@
         position: absolute;
         bottom: 0;
         width: 100%;
-    }
-    &__counter-box {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 24px;
-    }
-    &__counter-button {
-        width: 28px;
-        height: 28px;
-    }
-    &__counter-quantity {
-        font-family: $ubuntu-regular;
-        font-size: 36px;
-        line-height: 36px;
-        color: $grey-zero;
-        padding: 0 24px;
-    }
-    &__counter-quantity-active {
-        color: $grey;
-    }
-    &__add-button-container {
-        padding: 16px;
-        -webkit-box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.5);
-        -moz-box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.5);
-        box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.5);
-    }
-    &__add-button {
-        height: 48px;
-        width: 100%;
-        display: flex;
-        align-items: center;
-        padding: 16px;
-        font-family: $ubuntu-regular;
-        font-size: $item-name-font-size;
-        line-height: $item-name-line-height;
-    }
-    &__add-button_disabled {
-        justify-content: center;
-        color: $grey-zero;
-        background-color: $grey-disabled;
-    }
-    &__add-button_active {
-        justify-content: space-between;
-        color: $white;
-        background-color: $blue-button;
     }
 }
 

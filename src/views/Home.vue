@@ -25,6 +25,10 @@
             categories() {
                 return this.$store.state.categories;
             },
+            /**
+             * Check if there is selected item in the store
+             * @returns {boolean}
+             */
             itemSelected() {
                 return !!this.$store.state.selectedItem.item_id;
             }
@@ -33,9 +37,14 @@
 </script>
 
 <style lang="scss" scoped>
+    .home::-webkit-scrollbar {
+        display: none;
+    }
     .home {
         overflow-x: hidden;
         overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        -ms-overflow-style: none;
         padding: 24px 0 0 0;
         width: 100%;
         height: 100vh;

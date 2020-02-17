@@ -90,10 +90,39 @@ export default new Vuex.Store({
     /**
      * Add item to cart
      * @param state
-     * @param item
      */
-    addItemToCart(state, item) {
-      state.cart.push(item)
+    addItemToCart(state) {
+      // if item is already in cart delete isAdded flag and replace item with updated quantity
+      if (state.selectedItem.isAdded) {
+        let item = {...state.selectedItem};
+        delete item.isAdded;
+        state.cart = state.cart.map(itemInCart => {
+          if (itemInCart.item_id !== item.item_id) {
+            return itemInCart
+          } else {
+            return item
+          }
+        })
+      } else {
+        state.cart.push(state.selectedItem)
+      }
+      state.selectedItem = {};
+    },
+    /**
+     * Increase selected Item quantity
+     * @param state
+     */
+    increaseSelectedItemQuantity(state) {
+      state.selectedItem.quantity += 1;
+    },
+    /**
+     * Decrease selected item quantity
+     * @param state
+     */
+    decreaseSelectedItemQuantity(state) {
+      if (state.selectedItem.quantity > 0) {
+        state.selectedItem.quantity -= 1;
+      }
     }
   },
   actions: {

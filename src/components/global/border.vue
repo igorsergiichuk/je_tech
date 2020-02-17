@@ -13,7 +13,7 @@
         padding: 0;
         margin: 24px 6px;
         display: block;
-        width: 100%;
+        width: calc(100% - 12px);
         border-bottom: 1px solid $grey-border;
         line-height: 1px;
     }
